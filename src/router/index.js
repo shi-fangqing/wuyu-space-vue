@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SpaceLayout from '@/views/space/layout/index.vue'
 import SpaceHome from '@/views/space/index/index.vue'
 import Resume from '@/views/resume/index.vue'
+import { createWebHashHistory } from 'vue-router'
 
 const routes = [
   {
@@ -33,7 +34,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 })
 
