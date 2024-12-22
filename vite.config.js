@@ -23,5 +23,10 @@ export default defineConfig({
         // additionalData: `@import "@/assets/styles/variables.scss";`
       }
     }
+  },
+  server: {
+    watch: {
+      include: ['src/assets/file/**/*.md']
+    }
   }
 })

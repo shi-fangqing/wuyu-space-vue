@@ -1,7 +1,13 @@
 <template>
   <div class="projects">
     <div class="project-grid">
-      <div v-for="project in projects" :key="project.id" class="project-card">
+      <div v-if="projects.length === 0" class="empty-state">
+        <div class="empty-icon">📂</div>
+        <h3>暂无项目</h3>
+        <p>敬请期待更多精彩项目...</p>
+      </div>
+      
+      <div v-else v-for="project in projects" :key="project.id" class="project-card">
         <div class="project-header">
           <h2>{{ project.name }}</h2>
           <div class="project-links">
@@ -24,26 +30,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { loadProjects } from '@/utils/markdown'
 
-const projects = ref([
-  {
-    id: 1,
-    name: '易搬家 - 家政服务平台',
-    description: '基于Spring Boot + Vue3开发的家政服务平台，提供在线预约、实时跟踪、评价反馈等功能。',
-    github: '#',
-    demo: '#',
-    technologies: ['Vue3', 'Spring Boot', 'MySQL', 'Redis']
-  },
-  {
-    id: 2,
-    name: '智能AI助手',
-    description: '基于大语言模型的智能对话系统，提供代码编写、问题解答等功能。',
-    github: '#',
-    demo: '#',
-    technologies: ['Vue3', 'Node.js', 'OpenAI API']
-  }
-])
+const projects = ref([])
+
+onMounted(async () => {
+  projects.value = await loadProjects()
+})
 </script>
 
 <style scoped>
@@ -169,5 +163,31 @@ const projects = ref([
   .project-card {
     padding: 1.5rem;
   }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  grid-column: 1 / -1;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  color: #1a2a43;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.empty-state p {
+  color: #666;
+  font-size: 1rem;
 }
 </style> 

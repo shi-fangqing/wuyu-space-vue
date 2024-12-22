@@ -1,5 +1,6 @@
 <script setup>
-import { defineProps } from 'vue'
+import { ref, onMounted } from 'vue'
+import { loadArticle } from '@/utils/markdown'
 
 const props = defineProps({
   article: {
@@ -11,6 +12,23 @@ const props = defineProps({
     required: true
   }
 })
+
+const articleContent = ref('')
+
+// 格式化日期
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr)
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date)
+}
+
+onMounted(async () => {
+  const fullArticle = await loadArticle(props.article.id)
+  articleContent.value = fullArticle.content
+})
 </script>
 
 <template>
@@ -21,7 +39,7 @@ const props = defineProps({
       <div class="article-header">
         <h1>{{ article.title }}</h1>
         <div class="article-meta">
-          <span>{{ article.date }}</span>
+          <span>{{ formatDate(article.date) }}</span>
           <span>{{ article.category }}</span>
         </div>
         <div class="article-tags">
@@ -32,8 +50,7 @@ const props = defineProps({
       </div>
       
       <div class="article-content">
-        <p class="description">{{ article.description }}</p>
-        <!-- 这里可以添加更多文章内容 -->
+        <div v-html="articleContent"></div>
       </div>
     </div>
   </div>

@@ -623,4 +623,22 @@ section:nth-child(4) { animation-delay: 0.8s; }
     display: none;
   }
 }
+
+.resume-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 3rem 6rem;
+}
+
+@media (max-width: 768px) {
+  .resume-content {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .resume-content {
+    padding: 3rem 4rem;
+  }
+}
 </style>

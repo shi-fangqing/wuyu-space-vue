@@ -39,7 +39,7 @@
       >
         <h2>{{ article.title }}</h2>
         <div class="article-meta">
-          <span>{{ article.date }}</span>
+          <span>{{ formatDate(article.date) }}</span>
           <span>{{ article.category }}</span>
         </div>
         <p class="article-desc">{{ article.description }}</p>
@@ -65,32 +65,41 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { loadArticles } from '@/utils/markdown'
 import ArticleDetail from './ArticleDetail.vue'
 
 // 文章数据
-const articles = ref([
-  {
-    id: 1,
-    title: 'Vue3 组合式 API 最佳实践',
-    date: '2024-03-15',
-    category: '前端开发',
-    description: '探讨 Vue3 组合式 API 的使用技巧和最佳实践，包括响应式数据、生命周期钩子、组合函数等内容',
-    tags: ['Vue3', 'Composition API', '前端']
-  },
-  {
-    id: 2,
-    title: 'Spring Boot 项目实战经验分享',
-    date: '2024-03-10',
-    category: '后端开发',
-    description: '分享在实际项目中使用 Spring Boot 的经验和技巧，包括项目配置、性能优化、安全处理等方面...',
-    tags: ['Spring Boot', 'Java', '后端']
-  }
-])
-
-// 搜索相关
+const articles = ref([])
 const searchQuery = ref('')
 const selectedTags = ref([])
+
+// 加载文章数据
+const loadArticleData = async () => {
+  articles.value = await loadArticles()
+}
+
+onMounted(async () => {
+  await loadArticleData()
+})
+
+// 如果是开发环境，添加文件监听
+if (import.meta.env.DEV) {
+  const articleFiles = import.meta.glob('@/assets/file/articles/*.md', { 
+    as: 'raw',
+    eager: false
+  })
+  
+  // 监听文件变化
+  Object.keys(articleFiles).forEach(path => {
+    if (import.meta.hot) {
+      import.meta.hot.accept(path, async () => {
+        console.log('Article file changed, reloading...')
+        await loadArticleData()
+      })
+    }
+  })
+}
 
 // 获取所有标签
 const allTags = computed(() => {
@@ -136,6 +145,16 @@ const showArticleDetail = (article) => {
 
 const closeArticleDetail = () => {
   selectedArticle.value = null
+}
+
+// 格式化日期
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr)
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date)
 }
 </script>
 
