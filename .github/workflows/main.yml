@@ -1,0 +1,33 @@
+name: 打包Vue项目
+on: push
+permissions:
+  contents: write
+jobs:
+  pnpm-build:
+    name: pnpm-build工作
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 读取仓库内容
+      uses: actions/checkout@v4
+
+    # 添加这一步骤来设置 pnpm 环境
+    - name: 设置 pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: latest # 使用最新版本的 pnpm
+
+    # 安装 pnpm 的全局 CLI 工具（如果需要的话）
+    - name: 安装 pnpm
+      run: npm install -g pnpm
+
+    - name: 安装依赖和项目打包
+      run: |
+        pnpm install
+        pnpm run build
+
+    - name: 部署🚀
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages
+        folder: dist
