@@ -4,7 +4,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-and-deploy:
@@ -26,8 +26,13 @@ jobs:
 
     # 安装 pnpm
     - name: Setup pnpm
-      run: |
-        npm install -g pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: latest # 或者指定一个特定版本，如 7.18.0
+
+    # 显示 pnpm 版本（可选，用于调试）
+    - name: Check pnpm version
+      run: pnpm --version
 
     # 安装依赖
     - name: Install dependencies
