@@ -11,7 +11,7 @@ export default defineConfig({
     }
   },
   output: {
-    dir: 'docs',
+    dir: '/docs',
   },
   base: './',
   assetsInclude: ['**/*.jpg', '**/*.png', '**/*.gif'],
