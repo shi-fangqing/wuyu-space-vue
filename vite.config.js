@@ -14,7 +14,7 @@ export default defineConfig({
     outDir: 'docs',
     assetsDir: 'assets'
   },
-  base: './',
+  base: '/wuyu-vue/',
   assetsInclude: ['**/*.jpg', '**/*.png', '**/*.gif'],
   css: {
     preprocessorOptions: {
