@@ -12,21 +12,35 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    assetsDir: 'assets'
+    assetsDir: 'assets',
+    // 确保静态资源被正确复制
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html')
+      },
+      output: {
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.')
+          let extType = info[info.length - 1]
+          if (/\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/i.test(assetInfo.name)) {
+            extType = 'media'
+          } else if (/\.(png|jpe?g|gif|svg|ico|webp)(\?.*)?$/i.test(assetInfo.name)) {
+            extType = 'img'
+          } else if (/\.(woff2?|eot|ttf|otf)(\?.*)?$/i.test(assetInfo.name)) {
+            extType = 'fonts'
+          }
+          return `assets/${extType}/[name]-[hash][extname]`
+        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js'
+      }
+    },
+    // 添加静态资源处理
+    copyPublicDir: true,
+    assetsInlineLimit: 4096
   },
   base: '/wuyu-vue/',
-  assetsInclude: ['**/*.jpg', '**/*.png', '**/*.gif'],
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // 移除这行，因为我们会直接在需要的地方导入
-        // additionalData: `@import "@/assets/styles/variables.scss";`
-      }
-    }
-  },
-  server: {
-    watch: {
-      include: ['src/assets/file/**/*.md']
-    }
-  }
+  // 配置静态资源处理
+  publicDir: 'public',
+  assetsInclude: ['**/*.jpg', '**/*.png', '**/*.gif', '**/*.svg', '**/*.md']
 })

@@ -18,11 +18,15 @@ md.renderer.rules.image = (tokens, idx) => {
   // 处理图片路径
   let imgSrc = src
   if (src.startsWith('@/')) {
-    // 如果是以 @/ 开头的路径，转换为实际路径
-    imgSrc = new URL(src.replace('@/', '../'), import.meta.url).href
-  } else if (src.startsWith('./')) {
-    // 如果是相对路径，转换为实际路径
-    imgSrc = new URL(src, import.meta.url).href
+    try {
+      // 使用动态导入处理图片
+      const imagePath = src.replace('@/', '')
+      const imageModule = new URL(`../assets/${imagePath}`, import.meta.url)
+      imgSrc = imageModule.href
+    } catch (error) {
+      console.warn(`Failed to load image: ${src}`, error)
+      imgSrc = src
+    }
   }
 
   return `<img src="${imgSrc}" alt="${alt}" loading="lazy">`

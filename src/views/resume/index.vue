@@ -97,7 +97,7 @@ const skillsConfig = [
       <p class="subtitle">全栈工程师 | Java & Vue</p>
     </div>
 
-    <div class="main">
+    <div class="resume-content">
       <!-- 关于我 -->
       <section class="about">
         <h2>关于我</h2>
@@ -126,7 +126,7 @@ const skillsConfig = [
             <p class="project-desc">项目描述：面向医药零售行业的SaaS系统，为连锁药店提供完整的业务管理解决方案。</p>
             <p class="responsibilities">主要职责：</p>
             <ul>
-              <li>设计并实现店铺资源管理模块，包括视频、音频、图片等多媒体资源的上传、存储和管理功能</li>
+              <li>设计并实现店铺资源���理模块，包括视频、音频、图片等多媒体资源的上传、存储和管理功能</li>
               <li>基于阿里云OSS实现资源的分布式存储，提高系统的扩展性和可用性</li>
               <li>使用Vue3封装通用的资源管理组件，实现了资源预览、上传进度显示等功能，提高了开发效率</li>
               <li>优化资源加载性能，实现资源的懒加载和CDN加速，提升了用户体验</li>
@@ -640,5 +640,14 @@ section:nth-child(4) { animation-delay: 0.8s; }
   .resume-content {
     padding: 3rem 4rem;
   }
+}
+
+/* 确保其他部分的样式不受影响 */
+.resume-content section {
+  margin-bottom: 3rem;
+}
+
+.resume-content section:last-child {
+  margin-bottom: 0;
 }
 </style>
