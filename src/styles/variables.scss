@@ -1,0 +1,35 @@
+// 创建全局样式变量
+:root {
+  // 主色调
+  --primary-color: #1a2a43;
+  --primary-gradient: linear-gradient(135deg, #24385b 0%, #1a2a43 100%);
+  
+  // 强调色
+  --accent-color: #5c6ac4;
+  --accent-gradient: linear-gradient(90deg, #8bb8ff, #5c6ac4);
+  
+  // 文字颜色
+  --text-primary: #1a2a43;
+  --text-secondary: #666;
+  --text-light: rgba(255, 255, 255, 0.8);
+  
+  // 背景色
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #fff;
+  --bg-card: #fff;
+  
+  // 阴影
+  --shadow-sm: 0 2px 12px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.1);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.15);
+  
+  // 圆角
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  
+  // 动画时间
+  --transition-fast: 0.2s;
+  --transition-normal: 0.3s;
+  --transition-slow: 0.5s;
+} 

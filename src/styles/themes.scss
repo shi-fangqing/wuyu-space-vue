@@ -1,0 +1,25 @@
+// 预设样式
+:root[data-style='default'] {
+  --primary-gradient: linear-gradient(135deg, #24385b 0%, #1a2a43 100%);
+  --accent-color: #5c6ac4;
+}
+
+:root[data-style='elegant'] {
+  --primary-gradient: linear-gradient(135deg, #2c3e50 0%, #8e44ad 100%);
+  --accent-color: #8e44ad;
+}
+
+:root[data-style='tech'] {
+  --primary-gradient: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+  --accent-color: #3498db;
+}
+
+:root[data-style='nature'] {
+  --primary-gradient: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+  --accent-color: #2ecc71;
+}
+
+// 过渡动画
+* {
+  transition: all 0.3s ease;
+}

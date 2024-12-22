@@ -1,0 +1,48 @@
+// 页面切换动画
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+// 卡片悬浮动画
+.hover-lift {
+  transition: transform var(--transition-normal) ease,
+              box-shadow var(--transition-normal) ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+// 渐变边框动画
+@keyframes borderGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-border {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: var(--accent-gradient);
+    background-size: 200% 200%;
+    animation: borderGradient 3s ease infinite;
+    border-radius: inherit;
+    z-index: -1;
+  }
+} 

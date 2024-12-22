@@ -1,0 +1,29 @@
+// 断点
+$breakpoints: (
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px,
+  'xxl': 1400px
+);
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+}
+
+// 使用示例
+.container {
+  padding: 1rem;
+  
+  @include respond-to('md') {
+    padding: 2rem;
+  }
+  
+  @include respond-to('lg') {
+    padding: 3rem;
+  }
+} 
