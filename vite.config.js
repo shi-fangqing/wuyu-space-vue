@@ -10,8 +10,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src')
     }
   },
-  output: {
-    dir: '/docs',
+  build: {
+    outDir: 'docs',
+    assetsDir: 'assets'
   },
   base: './',
   assetsInclude: ['**/*.jpg', '**/*.png', '**/*.gif'],
