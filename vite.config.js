@@ -10,6 +10,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src')
     }
   },
+  output: {
+    dir: 'docs',
+  },
   base: './',
   assetsInclude: ['**/*.jpg', '**/*.png', '**/*.gif'],
   css: {
