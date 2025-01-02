@@ -28,6 +28,7 @@ const formatDate = (dateStr) => {
 onMounted(async () => {
   const fullArticle = await loadArticle(props.article.id)
   articleContent.value = fullArticle.content
+  console.log(articleContent.value)
 })
 </script>
 

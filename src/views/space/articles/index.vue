@@ -77,6 +77,7 @@ const selectedTags = ref([])
 // 加载文章数据
 const loadArticleData = async () => {
   articles.value = await loadArticles()
+  console.log(articles.value)
 }
 
 onMounted(async () => {
