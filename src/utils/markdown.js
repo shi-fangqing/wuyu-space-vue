@@ -8,12 +8,6 @@ const md = new MarkdownIt({
   linkify: true
 })
 
-// 导入所有图片资源
-const images = import.meta.glob('@/assets/images/**/*.{png,jpg,jpeg,gif,svg}', {
-  eager: true,
-  import: 'default'
-})
-
 // 自定义图片渲染规则
 md.renderer.rules.image = (tokens, idx) => {
   const token = tokens[idx]
@@ -22,27 +16,8 @@ md.renderer.rules.image = (tokens, idx) => {
   const alt = token.content || ''
   // 处理图片路径
   let imgSrc = src
-  if (src.startsWith('@/')) {
-    if (import.meta.env.DEV) {
-      // 开发环境：使用完整的相对路径
-      const imagePath = src.replace('@/', '')
-      imgSrc = `${import.meta.env.BASE_URL}src/${imagePath}`
-    } else {
-      // 生产环境：直接使用文件名
-      const fileName = src.split('/').pop()
-      imgSrc = `${import.meta.env.BASE_URL}assets/img/${fileName}`
-    }
-  } else if (src.startsWith('../')) {
-    if (import.meta.env.DEV) {
-      // 开发环境：处理相对路径，添加完整前缀
-      imgSrc = `${import.meta.env.BASE_URL}src/assets/${src.replace('../', '')}`
-    } else {
-      // 生产环境：直接使用文件名
-      const fileName = src.split('/').pop()
-      imgSrc = `${import.meta.env.BASE_URL}assets/img/${fileName}`
-    }
-  }
-
+  let baseUrl = import.meta.env.BASE_URL
+  imgSrc=baseUrl+imgSrc
   return `<img src="${imgSrc}" alt="${alt}" loading="lazy">`
 }
 
@@ -94,7 +69,6 @@ export async function loadArticle(id) {
   try {
     const content = await import(`@/assets/file/articles/${id}.md?raw`)
     const { attributes, body } = fm(content.default || content)
-    console.log(body)
     return {
       ...attributes,
       content: md.render(body) // 使用配置好的 markdown-it 实例

@@ -1,174 +1,229 @@
 <script setup>
-import { ref } from 'vue'
-import ChatWindow from '@/components/ChatWindow.vue'
+import { ref, onMounted } from 'vue'
 
-// AI功能卡片数据
-const aiFeatures = ref([
+// 图片墙数据
+const images = ref([
   {
-    icon: '🤖',
-    title: '智能对话',
-    desc: '基于大语言模型，提供智能对话服务'
+    id: 1,
+    url: new URL('@/assets/img/1.png', import.meta.url).href,
+    title: '风景摄影',
+    desc: '大自然的鬼斧神工'
   },
   {
-    icon: '📝',
-    title: '代码助手',
-    desc: '代码编写、调试和优化的智能助手'
+    id: 2,
+    url: new URL('@/assets/img/2.png', import.meta.url).href,
+    title: '城市掠影',
+    desc: '现代都市的繁华'
   },
   {
-    icon: '💡',
-    title: '问题解答',
-    desc: '技术问题的智能解答和建议'
+    id: 3,
+    url: new URL('@/assets/img/3.png', import.meta.url).href,
+    title: '生活随笔',
+    desc: '记录美好时刻'
   }
+  // 可以继续添加更多图片
 ])
+
+console.log(images.value)
+// 动画状态
+const hoveredImage = ref(null)
+
+const setHoveredImage = (image) => {
+  hoveredImage.value = image
+}
 </script>
 
 <template>
   <div class="space-home">
     <!-- 顶部标题区 -->
     <section class="hero">
-      <h1>勿语</h1>
-      <p class="subtitle">AI智能助手 | 全能帮手</p>
+      <h1>勿语的空间</h1>
+      <p class="subtitle">记录生活 | 分享技术 | 探索未知</p>
     </section>
 
-    <!-- AI功能展示区 -->
-    <section class="features">
-      <div class="feature-grid">
-        <div 
-          v-for="feature in aiFeatures"
-          :key="feature.title"
-          class="feature-card"
+    <!-- 动态图片墙 -->
+    <section class="gallery">
+      <div class="gallery-grid">
+        <div
+          v-for="image in images"
+          :key="image.id"
+          class="gallery-item"
+          @mouseenter="setHoveredImage(image)"
+          @mouseleave="setHoveredImage(null)"
         >
-          <div class="feature-icon">{{ feature.icon }}</div>
-          <h3>{{ feature.title }}</h3>
-          <p>{{ feature.desc }}</p>
+          <img :src="image.url" :alt="image.title">
+          <div class="gallery-overlay" :class="{ active: hoveredImage === image }">
+            <h3>{{ image.title }}</h3>
+            <p>{{ image.desc }}</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 聊天窗口 -->
-    <section class="chat-section">
-      <h2>有什么可以帮到你的吗？</h2>
-      <ChatWindow />
-    </section>
-
-    <!-- 底部说明文字 -->
-    <section class="description">
-      <p>基于大语言模型，提供智能对话、代码编写、问题解答等服务</p>
-      <p>24小时在线，随时为您提供帮助</p>
+    <!-- 简介区域 -->
+    <section class="intro">
+      <div class="intro-content">
+        <h2>关于我的空间</h2>
+        <p>这里是我的个人空间，记录着技术学习、生活感悟和创作分享。</p>
+        <p>希望能在这里与你相遇，共同探讨，共同成长。</p>
+      </div>
     </section>
   </div>
 </template>
 
 <style scoped>
 .space-home {
-  text-align: center;
+  padding: 2rem;
 }
 
 .hero {
-  padding: 3rem 0;
+  text-align: center;
+  padding: 4rem 0;
 }
 
 .hero h1 {
   font-size: 3rem;
-  color: #1a2a43;
+  color: var(--text-primary);
   margin-bottom: 1rem;
+  font-family: var(--font-serif);
 }
 
 .subtitle {
   font-size: 1.5rem;
-  color: #666;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
 }
 
-.features {
-  padding: 2rem 0;
+.gallery {
+  margin: 4rem 0;
 }
 
-.feature-grid {
+.gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  padding: 2rem;
+  padding: 1rem;
 }
 
-.feature-card {
-  background: white;
-  padding: 2rem;
+.gallery-item {
+  position: relative;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  transition: transform 0.3s;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.feature-card:hover {
+.gallery-item:hover {
   transform: translateY(-5px);
 }
 
-.feature-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-.feature-card h3 {
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0.4),
+    transparent
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-overlay.active,
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.gallery-overlay h3 {
+  color: white;
   font-size: 1.5rem;
-  color: #1a2a43;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-serif);
+}
+
+.gallery-overlay p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  font-family: var(--font-sans);
+}
+
+.intro {
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.intro-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.intro h2 {
+  font-size: 2rem;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  font-family: var(--font-serif);
+}
+
+.intro p {
+  color: var(--text-secondary);
+  line-height: 1.8;
   margin-bottom: 1rem;
-}
-
-.feature-card p {
-  color: #666;
-}
-
-.description {
-  padding: 3rem 0;
-  color: #666;
-  line-height: 1.6;
+  font-family: var(--font-sans);
 }
 
 @media (max-width: 768px) {
+  .space-home {
+    padding: 1rem;
+  }
+
+  .hero {
+    padding: 2rem 0;
+  }
+
   .hero h1 {
     font-size: 2rem;
   }
-  
+
   .subtitle {
     font-size: 1.2rem;
   }
-  
-  .feature-grid {
+
+  .gallery-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .gallery-overlay {
     padding: 1rem;
   }
-}
 
-.chat-section {
-  max-width: 800px;
-  margin: 3rem auto;
-  padding: 0 1rem;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: 2rem;
-}
-
-.chat-section h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: var(--text-primary);
-  font-size: 1.8rem;
-  font-weight: 600;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-@media (max-width: 768px) {
-  .chat-section {
-    margin: 2rem auto;
-    padding: 1.5rem;
+  .gallery-overlay h3 {
+    font-size: 1.2rem;
   }
-  
-  .chat-section h2 {
+
+  .intro {
+    padding: 2rem 0;
+  }
+
+  .intro h2 {
     font-size: 1.5rem;
-    margin-bottom: 1.5rem;
   }
 }
 </style>

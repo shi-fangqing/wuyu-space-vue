@@ -16,7 +16,6 @@ const banners = [
     title: '编程'
   }
 ]
-
 const currentBanner = ref(0)
 let bannerTimer = null
 

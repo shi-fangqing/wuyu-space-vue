@@ -77,30 +77,11 @@ const selectedTags = ref([])
 // 加载文章数据
 const loadArticleData = async () => {
   articles.value = await loadArticles()
-  console.log(articles.value)
 }
 
 onMounted(async () => {
   await loadArticleData()
 })
-
-// 如果是开发环境，添加文件监听
-if (import.meta.env.DEV) {
-  const articleFiles = import.meta.glob('@/assets/file/articles/*.md', { 
-    as: 'raw',
-    eager: false
-  })
-  
-  // 监听文件变化
-  Object.keys(articleFiles).forEach(path => {
-    if (import.meta.hot) {
-      import.meta.hot.accept(path, async () => {
-        console.log('Article file changed, reloading...')
-        await loadArticleData()
-      })
-    }
-  })
-}
 
 // 获取所有标签
 const allTags = computed(() => {
