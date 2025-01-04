@@ -22,13 +22,12 @@ export default defineConfig({
         assetFileNames: (assetInfo) => {
           const info = assetInfo.name.split('.')
           let extType = info[info.length - 1]
-          if (/\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/i.test(assetInfo.name)) {
-            extType = 'media'
-          } else if (/\.(png|jpe?g|gif|svg|ico|webp)(\?.*)?$/i.test(assetInfo.name)) {
-            extType = 'img'
-          } else if (/\.(woff2?|eot|ttf|otf)(\?.*)?$/i.test(assetInfo.name)) {
-            extType = 'fonts'
+          // 图片资源不添加 hash，保持原始文件名
+          if (/\.(png|jpe?g|gif|svg|webp)(\?.*)?$/i.test(assetInfo.name)) {
+            const name = assetInfo.name.replace(/^.*[\\\/]/, '') // 获取文件名
+            return `assets/img/${name}`
           }
+          // 其他资源
           return `assets/${extType}/[name]-[hash][extname]`
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
@@ -42,5 +41,5 @@ export default defineConfig({
   base: '/wuyu-vue/',
   // 配置静态资源处理
   publicDir: 'public',
-  assetsInclude: ['**/*.jpg', '**/*.png', '**/*.gif', '**/*.svg', '**/*.md']
+  assetsInclude: ['**/*.jpg', '**/*.png', '**/*.gif', '**/*.svg', '**/*.webp', '**/*.md']
 })
