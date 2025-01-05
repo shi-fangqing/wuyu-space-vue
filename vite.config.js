@@ -38,7 +38,7 @@ export default defineConfig({
     // copyPublicDir: true,
     // assetsInlineLimit: 4096
   },
-  base: '/wuyu-vue/',
+  base: '/wuyu-space-vue/',
   // 配置静态资源处理
   publicDir: 'public',
   assetsInclude: ['**/*.jpg', '**/*.png', '**/*.gif', '**/*.svg', '**/*.webp', '**/*.md']
